@@ -3,7 +3,6 @@ const express = require('express')
 require('dotenv').config()
 const path = require('path')
 
-
 // Initialize app
 const app = express()
 
@@ -26,19 +25,21 @@ app.use(morgan('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 
+
 // Root Route
 app.get('/', (req, res) => {
   res.send('Your app is connected . . . ')
 })
 
 // Require Routers
-const customerRouter = require("./routes/Customer")
+
+//const customerRouter = require("./routes/Customer")
 
 // use Routers
-app.use("/customers", customerRouter)
+//app.use("/customers", customerRouter)
+
 
 // Listener
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
 })
-
