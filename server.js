@@ -2,6 +2,7 @@
 const express = require('express')
 require('dotenv').config()
 const path = require('path')
+const cors = require("cors")
 
 // Initialize app
 const app = express()
@@ -13,10 +14,12 @@ const mongoose = require('./config/db')
 const port = process.env.PORT ? process.env.PORT : 3000
 
 // Require MiddleWares
+app.use(cors())
 const methodOverride = require('method-override')
 const morgan = require('morgan')
 
 // use MiddleWares
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
