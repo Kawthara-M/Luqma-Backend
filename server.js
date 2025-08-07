@@ -1,7 +1,6 @@
 // imports
 const express = require('express')
 require('dotenv').config()
-const session = require('express-session')
 const path = require('path')
 
 
