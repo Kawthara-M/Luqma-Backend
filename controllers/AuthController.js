@@ -4,9 +4,14 @@ const middleware = require('../middleware/index')
 
 const SignUp = async (req, res) => {
   try {
-    const { username, email, password, phone } = req.body
+    console.log('test')
+    console.log(req.body)
 
-    let passwordDigest = await middleware.hashPassword(password)
+    const { name, email, passwordDigest, phone } = req.body
+
+    console.log(req.body)
+
+    let hashPassword = await middleware.hashPassword(passwordDigest)
 
     let existingUser = await User.findOne({ email })
     if (existingUser) {
@@ -15,9 +20,9 @@ const SignUp = async (req, res) => {
         .send('A user with that email has already been registered!')
     } else {
       const customer = await Customer.create({
-        username,
+        name,
         email,
-        passwordDigest,
+        hashPassword,
         phone
       })
       res.send(customer)

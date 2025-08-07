@@ -16,15 +16,11 @@ const port = process.env.PORT ? process.env.PORT : 3000
 const methodOverride = require('method-override')
 const morgan = require('morgan')
 
-
-
 // use MiddleWares
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
-
-
 
 // Root Route
 app.get('/', (req, res) => {
@@ -33,11 +29,10 @@ app.get('/', (req, res) => {
 
 // Require Routers
 
-//const customerRouter = require("./routes/Customer")
+const customerRouter = require('./routes/Customer')
 
 // use Routers
-//app.use("/customers", customerRouter)
-
+app.use('/customers', customerRouter)
 
 // Listener
 app.listen(port, () => {
