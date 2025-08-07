@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Jasmi's", 
+    "cuisineType": "Fast-food",
+    "phone": "+973 17179000",
+    "address": "2450 Muharraq", 
+    "email": "jasmis@gmail.com"
+  }, 
+  {
+    "name": "Coco's", 
+    "cuisineType": "International",
+    "phone": "+973 17712288",
+    "address": "3389 Adliya", 
+    "email": "cocos@gmail.com"
+  }
+]
