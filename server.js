@@ -32,10 +32,10 @@ app.get('/', (req, res) => {
 })
 
 // Require Routers
-const customerRouter = require("./routes/Customer")
+//const customerRouter = require("./routes/Customer")
 
 // use Routers
-app.use("/customers", customerRouter)
+//app.use("/customers", customerRouter)
 
 // Listener
 app.listen(port, () => {
