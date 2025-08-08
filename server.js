@@ -33,9 +33,14 @@ app.get("/", (req, res) => {
 // Require Routers
 
 const authRouter = require("./routes/AuthRouter")
+//const orderRouter = require("./routes/orderRouter") //commented until order functionalities are done
+const searchRouter= require("./routes/searchRouter")
 
 // use Routers
 app.use("/auth", authRouter)
+//app.use("/order", orderRouter) //commented until order functionalities are done
+app.use('/search' , searchRouter)
+
 
 // Listener
 app.listen(port, () => {
