@@ -4,15 +4,15 @@ const middleware = require('../middleware/index')
 
 const SignUp = async (req, res) => {
   try {
-    const { name, email, phone, passwordDigest } = req.body
+    const { name, email, phone, password } = req.body
 
-    let hashPassword = await middleware.hashPassword(passwordDigest)
+    let hashPassword = await middleware.hashPassword(password)
 
     let existingUser = await Customer.findOne({ email })
     if (existingUser) {
       return res
         .status(400)
-        .send('A user with that email has already been registered!')
+        .json({ error: 'A user with that email has already been registered!' })
     } else {
       const customer = await Customer.create({
         name,
@@ -27,7 +27,7 @@ const SignUp = async (req, res) => {
   }
 }
 
-const Signin = async (req, res) => {
+const SignIn = async (req, res) => {
   try {
     const { email, passwordDigest } = req.body
 
@@ -156,7 +156,7 @@ const CheckSession = async (req, res) => {
 }
 module.exports = {
   SignUp,
-  Signin,
+  SignIn,
   getCustomerProfile,
   updateCustomerProfile,
   UpdatePassword,
