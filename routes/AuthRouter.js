@@ -7,14 +7,12 @@ router.post("/sign-up", authCtrl.SignUp)
 // route for sign-in, uncomment when SignIn controller is ready
 //router.post('/sign-in',authCtrl.SignIn)
 
+// we need to add middleware after sign-in is done, to ensure only the user themselves can access the following routes:
 router.get("/:id", authCtrl.getCustomerProfile)
-router.put("/:id", authCtrl.updateCustomerProfile)
+router.put("/:id", authCtrl.updateCustomerProfile) 
+router.put("/update-password/:id",authCtrl.UpdatePassword)
+router.delete("/:id", authCtrl.deletAccount)
 
-// update password route is commented until login is done, otherwise it wouldn't work
-/* router.put("/update-password/:id",middleware.stripToken,
-  middleware.verifyToken, authCtrl.UpdatePassword) */
-
-  // 
 /*  router.get(
   '/session',
   middleware.stripToken,
