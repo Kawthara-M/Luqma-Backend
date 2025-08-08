@@ -5,7 +5,7 @@ const authCtrl = require("../controllers/AuthController")
 router.post("/sign-up", authCtrl.SignUp)
 
 // route for sign-in, uncomment when SignIn controller is ready
-//router.post('/sign-in',authCtrl.SignIn)
+router.post('/sign-in',authCtrl.SignIn)
 
 // we need to add middleware after sign-in is done, to ensure only the user themselves can access the following routes:
 router.get("/:id", authCtrl.getCustomerProfile)
