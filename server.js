@@ -2,7 +2,7 @@
 const express = require('express')
 require('dotenv').config()
 const path = require('path')
-const cors = require("cors")
+const cors = require('cors')
 
 // Initialize app
 const app = express()
@@ -33,9 +33,11 @@ app.get('/', (req, res) => {
 // Require Routers
 
 const customerRouter = require('./routes/Customer')
+const authRouter = require('./routes/Auth')
 
 // use Routers
 app.use('/customers', customerRouter)
+app.use('/auth', authRouter)
 
 // Listener
 app.listen(port, () => {

@@ -1,10 +1,9 @@
-const Customer = require("../models/Customer")
+const Customer = require('../models/Customer')
 
-const middleware = require("../middleware/index")
+const middleware = require('../middleware/index')
 
 const SignUp = async (req, res) => {
   try {
-
     const { name, email, phone, passwordDigest } = req.body
 
     let hashPassword = await middleware.hashPassword(passwordDigest)
@@ -13,13 +12,13 @@ const SignUp = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .send("A user with that email has already been registered!")
+        .send('A user with that email has already been registered!')
     } else {
       const customer = await Customer.create({
         name,
         email,
         phone,
-        passwordDigest: hashPassword,
+        passwordDigest: hashPassword
       })
       res.send(customer)
     }
@@ -35,42 +34,49 @@ const Signin = async (req, res) => {
   }
 }
 
-const UpdatePassword = async (req, res) => {
+const getCustomerProfile = async (req, res) => {
   try {
-    const { oldPassword, newPassword } = req.body
-    let customer = await Customer.findById(req.params.customerId)
+    const customerId = req.params.id
+    const customer = await Customer.findById(customerId)
 
-    let matched = await middleware.comparePassword(
-      oldPassword,
-      customer.passwordDigest
-    )
-    if (matched) {
-      let passwordDigest = await middleware.hashPassword(newPassword)
-      customer = await Customer.findByIdAndUpdate(req.params.customerId, {
-        passwordDigest,
-      })
-      let payload = {
-        id: user.id,
-        email: user.email,
-      }
-      return res
-        .status(200)
-        .send({ status: "Password Updated!", user: payload })
+    if (!customer) {
+      return res.status(404).send('Customer not found')
     }
-    res
-      .status(401)
-      .send({ status: "Error", msg: "Old Password did not match!" })
+
+    res.status(200).json(customer)
   } catch (error) {
-    console.log(error)
-    res.status(401).send({
-      status: "Error",
-      msg: "An error has occurred updating password!",
-    })
+    throw error
   }
 }
 
+const updateCustomerProfile = async (req, res) => {
+  try {
+    const { name, email, phone } = req.body
+
+    const customerId = req.params.id
+
+    const updatedCustomer = await Customer.findByIdAndUpdate(
+      customerId,
+      {
+        name,
+        email,
+        phone
+      },
+      { new: true }
+    )
+
+    if (!updatedCustomer) {
+      return res.status(404).send('Customer not found')
+    }
+
+    res.status(200).json(updatedCustomer)
+  } catch (error) {
+    throw error
+  }
+}
 module.exports = {
   SignUp,
   Signin,
-  UpdatePassword,
+  getCustomerProfile,
+  updateCustomerProfile,
 }
