@@ -1,8 +1,17 @@
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGO_URI)
+require('dotenv').config()
 
-mongoose.connection.on('connected', () => {
-  console.log(`connected to Database: ${mongoose.connection.name}`)
-})
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('Successfully connected to MongoDB . . .')
+  })
+  .catch((e) => {
+    console.error('Connection error', e.message)
+  })
 
-module.exports = mongoose
+// mongoose.set('debug', true)
+
+const db = mongoose.connection
+
+module.exports = db
