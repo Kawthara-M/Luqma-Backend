@@ -34,13 +34,13 @@ app.get('/sign-in', (req, res) => {
 
 const authRouter = require('./routes/AuthRouter')
 const customerRouter = require('./routes/CustomerRouter')
-//const orderRouter = require("./routes/orderRouter") //commented until order functionalities are done
+const orderRouter = require("./routes/orderRouter") 
 const searchRouter = require('./routes/searchRouter')
 
 // use Routers
 app.use('/auth', authRouter)
 app.use('/customer', customerRouter)
-//app.use("/order", orderRouter) //commented until order functionalities are done
+app.use("/order", orderRouter) 
 app.use('/search', searchRouter)
 
 // Listener

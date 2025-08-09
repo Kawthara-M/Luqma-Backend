@@ -10,21 +10,32 @@ const orderSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurant",
     },
+    deliveryMan: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DeliveryMan",
+      default: null,
+    },
+    meals: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Meal",
+      },
+    ],
     quantity: {
       type: Number,
       required: true,
     },
     totalPrice: {
       type: Number,
-      required: true,
     },
     address: {
       type: String,
-      required: true,
+      //   required: true,
     },
     status: {
       type: String,
-      default: "in-cart",
+      enum: ["cart", "submitted", "processing", "delivered"],
+      default: "cart",
     },
   },
   { timestamps: true }
