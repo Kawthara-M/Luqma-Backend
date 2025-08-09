@@ -10,12 +10,6 @@ const orderSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurant",
     },
-    meals: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Meal",
-      },
-    ],
     quantity: {
       type: Number,
       required: true,
@@ -27,6 +21,10 @@ const orderSchema = mongoose.Schema(
     address: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      default: "in-cart",
     },
   },
   { timestamps: true }

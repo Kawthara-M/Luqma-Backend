@@ -7,7 +7,7 @@ const SignUp = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body
 
-  /*   if (!validatePassword(password)) {
+    /*   if (!validatePassword(password)) {
       return res.status(400).json({ error: "Weak Password! Have a mix of capital and lower letters, digits, and unique symbols!" })
     } */ //uncomment when everything is done
 
@@ -60,89 +60,15 @@ const SignIn = async (req, res) => {
   }
 }
 
-// const getCustomerProfile = async (req, res) => {
-//   try {
-//     const customerId = req.params.id
-//     const customer = await Customer.findById(customerId)
-
-//     if (!customer) {
-//       return res.status(404).send('Customer not found')
-//     }
-
-//     res.status(200).json(customer)
-//   } catch (error) {
-//     throw error
-//   }
-// }
-
-// const updateCustomerProfile = async (req, res) => {
-//   try {
-//     const { name, email, phone } = req.body
-
-//     const customerId = req.params.id
-
-//     const updatedCustomer = await Customer.findByIdAndUpdate(
-//       customerId,
-//       {
-//         name,
-//         email,
-//         phone
-//       },
-//       { new: true }
-//     )
-
-//     if (!updatedCustomer) {
-//       return res.status(404).send('Customer not found')
-//     }
-
-//     res.status(200).json(updatedCustomer)
-//   } catch (error) {
-//     throw error
-//   }
-// }
-// const UpdatePassword = async (req, res) => {
-//   try {
-//     console.log('I entered update password')
-//     const { oldPassword, newPassword } = req.body
-//     let customer = await Customer.findById(req.params.id)
-//     let matched = await middleware.comparePassword(
-//       oldPassword,
-//       customer.passwordDigest
-//     )
-//     if (matched) {
-//       let passwordDigest = await middleware.hashPassword(newPassword)
-//       customer = await Customer.findByIdAndUpdate(req.params.id, {
-//         passwordDigest
-//       })
-//       let payload = {
-//         id: customer.id,
-//         email: customer.email
-//       }
-//       return res
-//         .status(200)
-//         .send({ status: 'Password Updated!', user: payload })
-//     }
-//     res
-//       .status(401)
-//       .send({ status: 'Error', msg: 'Old Password did not match!' })
-//   } catch (error) {
-//     console.log(error)
-//     res.status(401).send({
-//       status: 'Error',
-//       msg: 'An error has occurred updating password!'
-//     })
-//   }
-// }
 
 // this controller require handling like signout in front-end to clear localStorage
 const deletAccount = async (req, res) => {
   try {
     const userId = req.params.id
 
-    // uncomment when login is ready
-    /* if (res.locals.payload.id !== userId) {
+    if (res.locals.payload.id !== userId) {
       return res.status(403).send({ msg: "Unauthorized request" })
-    }*/
+    }
 
     // am not sure if this works as order still don't have data, but it's supposed to delete orders made by of current user account before deleting the account
     // await Order.deleteMany({ customer: userId } )
@@ -162,9 +88,6 @@ const CheckSession = async (req, res) => {
 module.exports = {
   SignUp,
   SignIn,
-  // getCustomerProfile,
-  // updateCustomerProfile,
-  // UpdatePassword,
   CheckSession,
   deletAccount,
 }
