@@ -1,17 +1,37 @@
 const router = require("express").Router()
 
 const authCtrl = require("../controllers/AuthController")
+const middleware = require("../middleware")
 
 router.post("/sign-up", authCtrl.SignUp)
 
 // route for sign-in, uncomment when SignIn controller is ready
-router.post('/sign-in',authCtrl.SignIn)
+router.post("/sign-in", authCtrl.SignIn)
 
-// we need to add middleware after sign-in is done, to ensure only the user themselves can access the following routes:
-router.get("/:id", authCtrl.getCustomerProfile)
-router.put("/:id", authCtrl.updateCustomerProfile) 
-router.put("/update-password/:id",authCtrl.UpdatePassword)
-router.delete("/:id", authCtrl.deletAccount)
+router.get(
+  "/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  authCtrl.getCustomerProfile
+)
+router.put(
+  "/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  authCtrl.updateCustomerProfile
+)
+router.put(
+  "/update-password/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  authCtrl.UpdatePassword
+)
+router.delete(
+  "/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  authCtrl.deletAccount
+)
 
 /*  router.get(
   '/session',

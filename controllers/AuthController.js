@@ -97,7 +97,6 @@ const updateCustomerProfile = async (req, res) => {
 }
 const UpdatePassword = async (req, res) => {
   try {
-    console.log('I entered update password')
     const { oldPassword, newPassword } = req.body
     let customer = await Customer.findById(req.params.id)
     let matched = await middleware.comparePassword(
