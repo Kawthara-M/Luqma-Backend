@@ -1,10 +1,15 @@
-const Customer = require('../models/Customer')
-const Order = require('../models/Order')
-const middleware = require('../middleware/index')
+const Customer = require("../models/Customer")
+const Order = require("../models/Order")
+const middleware = require("../middleware/index")
+const validatePassword = require("../validators/passwordValidator.js")
 
 const SignUp = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body
+
+  /*   if (!validatePassword(password)) {
+      return res.status(400).json({ error: "Weak Password! Have a mix of capital and lower letters, digits, and unique symbols!" })
+    } */ //uncomment when everything is done
 
     let hashPassword = await middleware.hashPassword(password)
 
@@ -12,13 +17,13 @@ const SignUp = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ error: 'A user with that email has already been registered!' })
+        .json({ error: "A user with that email has already been registered!" })
     } else {
       const customer = await Customer.create({
         name,
         email,
         phone,
-        passwordDigest: hashPassword
+        passwordDigest: hashPassword,
       })
       res.send(customer)
     }
@@ -41,17 +46,17 @@ const SignIn = async (req, res) => {
     if (matched) {
       let payload = {
         id: customer._id,
-        email: customer.email
+        email: customer.email,
       }
 
       let token = middleware.createToken(payload)
       return res.send({ customer: payload, token })
     }
 
-    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
+    res.status(401).send({ status: "Error", msg: "Unauthorized" })
   } catch (error) {
     console.log(error)
-    res.status(401).send({ status: 'Error', msg: 'An error has occurred!' })
+    res.status(401).send({ status: "Error", msg: "An error has occurred!" })
   }
 }
 
@@ -61,7 +66,7 @@ const getCustomerProfile = async (req, res) => {
     const customer = await Customer.findById(customerId)
 
     if (!customer) {
-      return res.status(404).send('Customer not found')
+      return res.status(404).send("Customer not found")
     }
 
     res.status(200).json(customer)
@@ -81,13 +86,13 @@ const updateCustomerProfile = async (req, res) => {
       {
         name,
         email,
-        phone
+        phone,
       },
       { new: true }
     )
 
     if (!updatedCustomer) {
-      return res.status(404).send('Customer not found')
+      return res.status(404).send("Customer not found")
     }
 
     res.status(200).json(updatedCustomer)
@@ -106,24 +111,24 @@ const UpdatePassword = async (req, res) => {
     if (matched) {
       let passwordDigest = await middleware.hashPassword(newPassword)
       customer = await Customer.findByIdAndUpdate(req.params.id, {
-        passwordDigest
+        passwordDigest,
       })
       let payload = {
         id: customer.id,
-        email: customer.email
+        email: customer.email,
       }
       return res
         .status(200)
-        .send({ status: 'Password Updated!', user: payload })
+        .send({ status: "Password Updated!", user: payload })
     }
     res
       .status(401)
-      .send({ status: 'Error', msg: 'Old Password did not match!' })
+      .send({ status: "Error", msg: "Old Password did not match!" })
   } catch (error) {
     console.log(error)
     res.status(401).send({
-      status: 'Error',
-      msg: 'An error has occurred updating password!'
+      status: "Error",
+      msg: "An error has occurred updating password!",
     })
   }
 }
@@ -142,10 +147,10 @@ const deletAccount = async (req, res) => {
     // await Order.deleteMany({ customer: userId } )
     await Customer.findByIdAndDelete(userId)
 
-    res.status(200).send({ msg: 'Account successfully deleted' })
+    res.status(200).send({ msg: "Account successfully deleted" })
   } catch (error) {
     console.error(error)
-    res.status(500).send({ msg: 'Failed to delete account' })
+    res.status(500).send({ msg: "Failed to delete account" })
   }
 }
 
@@ -160,5 +165,5 @@ module.exports = {
   updateCustomerProfile,
   UpdatePassword,
   CheckSession,
-  deletAccount
+  deletAccount,
 }
