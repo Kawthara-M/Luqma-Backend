@@ -1,46 +1,47 @@
 // imports
-const express = require("express")
-require("dotenv").config()
-const path = require("path")
-const cors = require("cors")
+const express = require('express')
+require('dotenv').config()
+const path = require('path')
+const cors = require('cors')
 
 // Initialize app
 const app = express()
 
 // Database Configuration
-const mongoose = require("./config/db")
+const mongoose = require('./config/db')
 
 // set Port Configuration
 const port = process.env.PORT ? process.env.PORT : 3000
 
 // Require MiddleWares
 app.use(cors())
-const methodOverride = require("method-override")
-const morgan = require("morgan")
+const methodOverride = require('method-override')
+const morgan = require('morgan')
 
 // use MiddleWares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(methodOverride("_method"))
-app.use(morgan("dev"))
-app.use(express.static(path.join(__dirname, "public")))
+app.use(methodOverride('_method'))
+app.use(morgan('dev'))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Root Route
-app.get("/", (req, res) => {
-  res.send("Your app is connected . . . ")
+app.get('/sign-in', (req, res) => {
+  res.send('Your app is connected . . . ')
 })
 
 // Require Routers
 
-const authRouter = require("./routes/AuthRouter")
+const authRouter = require('./routes/AuthRouter')
+const customerRouter = require('./routes/CustomerRouter')
 //const orderRouter = require("./routes/orderRouter") //commented until order functionalities are done
-const searchRouter= require("./routes/searchRouter")
+const searchRouter = require('./routes/searchRouter')
 
 // use Routers
-app.use("/auth", authRouter)
+app.use('/auth', authRouter)
+app.use('/customer', customerRouter)
 //app.use("/order", orderRouter) //commented until order functionalities are done
-app.use('/search' , searchRouter)
-
+app.use('/search', searchRouter)
 
 // Listener
 app.listen(port, () => {
