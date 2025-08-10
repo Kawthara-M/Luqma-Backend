@@ -1,7 +1,7 @@
-const Customer = require("../models/Customer")
-const Order = require("../models/Order")
-const middleware = require("../middleware/index")
-const validatePassword = require("../validators/passwordValidator.js")
+const Customer = require('../models/Customer')
+const Order = require('../models/Order')
+const middleware = require('../middleware/index')
+const validatePassword = require('../validators/passwordValidator.js')
 
 const SignUp = async (req, res) => {
   try {
@@ -17,15 +17,23 @@ const SignUp = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ error: "A user with that email has already been registered!" })
+        .json({ error: 'A user with that email has already been registered!' })
     } else {
       const customer = await Customer.create({
         name,
         email,
         phone,
-        passwordDigest: hashPassword,
+        passwordDigest: hashPassword
       })
-      res.send(customer)
+      let payload = {
+        id: customer._id,
+        email: customer.email
+      }
+      console.log(payload)
+
+      let token = middleware.createToken(payload)
+
+      return res.send({ customer: payload, token })
     }
   } catch (error) {
     throw error
@@ -46,20 +54,19 @@ const SignIn = async (req, res) => {
     if (matched) {
       let payload = {
         id: customer._id,
-        email: customer.email,
+        email: customer.email
       }
 
       let token = middleware.createToken(payload)
       return res.send({ customer: payload, token })
     }
 
-    res.status(401).send({ status: "Error", msg: "Unauthorized" })
+    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
   } catch (error) {
     console.log(error)
-    res.status(401).send({ status: "Error", msg: "An error has occurred!" })
+    res.status(401).send({ status: 'Error', msg: 'An error has occurred!' })
   }
 }
-
 
 // this controller require handling like signout in front-end to clear localStorage
 const deletAccount = async (req, res) => {
@@ -67,17 +74,17 @@ const deletAccount = async (req, res) => {
     const userId = req.params.id
 
     if (res.locals.payload.id !== userId) {
-      return res.status(403).send({ msg: "Unauthorized request" })
+      return res.status(403).send({ msg: 'Unauthorized request' })
     }
 
     // am not sure if this works as order still don't have data, but it's supposed to delete orders made by of current user account before deleting the account
     // await Order.deleteMany({ customer: userId } )
     await Customer.findByIdAndDelete(userId)
 
-    res.status(200).send({ msg: "Account successfully deleted" })
+    res.status(200).send({ msg: 'Account successfully deleted' })
   } catch (error) {
     console.error(error)
-    res.status(500).send({ msg: "Failed to delete account" })
+    res.status(500).send({ msg: 'Failed to delete account' })
   }
 }
 
@@ -89,5 +96,5 @@ module.exports = {
   SignUp,
   SignIn,
   CheckSession,
-  deletAccount,
+  deletAccount
 }
