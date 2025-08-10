@@ -13,6 +13,20 @@ const GetAllRestaurants = async (req, res) => {
   }
 }
 
+const GetRestaurant = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findOne({_id: req.params.id})
+    if (restaurant) {
+      res.send(restaurant)
+    } else {
+      res.send("no restaurants found")
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   GetAllRestaurants,
+  GetRestaurant
 }

@@ -43,7 +43,7 @@ app.use('/auth', authRouter)
 app.use('/customer', customerRouter)
 app.use("/order", orderRouter) 
 app.use('/search', searchRouter)
-app.use("/Home", restaurantRouter)
+app.use("/restaurants", restaurantRouter)
 
 // Listener
 app.listen(port, () => {
