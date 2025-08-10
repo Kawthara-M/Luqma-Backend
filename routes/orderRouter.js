@@ -35,11 +35,11 @@ router.put(
 ) 
 
 // delete an order from cart
-/* router.delete(
+router.delete(
   "/cart/:id",
   middleware.stripToken,
   middleware.verifyToken,
-  orderCtrl.DeleteOrder
-) */
+  orderCtrl.deleteOrder
+) 
 
 module.exports = router
