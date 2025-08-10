@@ -18,6 +18,7 @@ const restaurantData = [
     phone: "+973 17179000",
     address: "2450 Muharraq",
     email: "jasmis@gmail.com",
+    image:"https://cdn.prod.website-files.com/63a327f073bbfd0ed01684d8/63a327f073bbfd4246168ad3_239999.svg"
   },
   {
     name: "Coco's",

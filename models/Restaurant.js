@@ -7,6 +7,7 @@ const restaurantSchema = new Schema({
   phone: { type: String },
   address: { type: String },
   email: { type: String },
+  image: {type:String}
 })
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema)
