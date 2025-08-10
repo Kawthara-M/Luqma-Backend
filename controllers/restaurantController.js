@@ -1,5 +1,5 @@
-const Restaurant = require("../models/Restaurant")
-const Meal = require("../models/Meal")
+const Restaurant = require('../models/Restaurant')
+const Meal = require('../models/Meal')
 
 const GetAllRestaurants = async (req, res) => {
   try {
@@ -7,7 +7,7 @@ const GetAllRestaurants = async (req, res) => {
     if (restaurants) {
       res.send(restaurants)
     } else {
-      res.send("no restaurants found")
+      res.send('no restaurants found')
     }
   } catch (error) {
     console.log(error)
@@ -20,7 +20,7 @@ const GetRestaurant = async (req, res) => {
     if (restaurant) {
       res.send(restaurant)
     } else {
-      res.send("no restaurants found")
+      res.send('no restaurants found')
     }
   } catch (error) {
     console.log(error)
@@ -29,17 +29,32 @@ const GetRestaurant = async (req, res) => {
 const GetMenu = async (req, res) => {
   try {
     const restaurant = await Restaurant.findOne({ _id: req.params.id })
-    
 
     if (restaurant) {
       const meals = await Meal.find({ restaurant: restaurant._id })
       if (meals) {
         res.send(meals)
       } else {
-        res.send("no meals found for this restaurant")
+        res.send('no meals found for this restaurant')
       }
     } else {
-      res.send("no restaurants found")
+      res.send('no restaurants found')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// filter by category
+const GetRestaurantsByCategory = async (req, res) => {
+  try {
+    const { cuisineType } = req.params
+    const restaurants = await Restaurant.find({ cuisineType })
+
+    if (restaurants) {
+      res.send(restaurants)
+    } else {
+      res.send(`No restaurants found for cuisine: ${cuisineType}`)
     }
   } catch (error) {
     console.log(error)
@@ -50,4 +65,5 @@ module.exports = {
   GetAllRestaurants,
   GetRestaurant,
   GetMenu,
+  GetRestaurantsByCategory
 }
