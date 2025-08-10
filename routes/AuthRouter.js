@@ -1,13 +1,11 @@
-const router = require('express').Router()
-
+const router = require("express").Router()
 
 const authCtrl = require("../controllers/AuthController")
 const middleware = require("../middleware")
 
-router.post('/sign-up', authCtrl.SignUp)
+router.post("/sign-up", authCtrl.SignUp)
 
-router.post('/sign-in', authCtrl.SignIn)
-
+router.post("/sign-in", authCtrl.SignIn)
 
 router.delete(
   "/:id",
@@ -16,10 +14,10 @@ router.delete(
   authCtrl.deletAccount
 )
 
-/*  router.get(
-  '/session',
+router.get(
+  "/session",
   middleware.stripToken,
   middleware.verifyToken,
-  controller.CheckSession
-) */
+  authCtrl.CheckSession
+)
 module.exports = router
