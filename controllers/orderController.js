@@ -74,9 +74,21 @@ const updateOrder = async (req, res) => {
   }
 }
 
+const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id)
+    await order.deleteOne()
+    res.status(200) 
+  } catch (error) {
+    console.log(error)
+    res.status(500).send("An error occured meal can't be deleted")
+  }
+}
+
 module.exports = {
   GetCartOrders,
   GetPastOrders,
   createOrder,
   updateOrder,
+  deleteOrder
 }
