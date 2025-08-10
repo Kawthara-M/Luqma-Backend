@@ -48,7 +48,6 @@ const SignIn = async (req, res) => {
         id: customer._id,
         email: customer.email,
       }
-
       let token = middleware.createToken(payload)
       return res.send({ customer: payload, token })
     }

@@ -27,12 +27,12 @@ router.post(
 )
 
 // update order in cart
-/* router.put(
+router.put(
   "/cart/:id",
   middleware.stripToken,
   middleware.verifyToken,
-  orderCtrl.UpdateOrder
-) */
+  orderCtrl.updateOrder
+) 
 
 // delete an order from cart
 /* router.delete(

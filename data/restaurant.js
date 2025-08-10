@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const  Restaurant  = require("../models/Restaurant")
-require("dotenv").config({ path: '../.env' })
+require("dotenv").config()
 
 mongoose
   .connect(process.env.MONGO_URI) 
