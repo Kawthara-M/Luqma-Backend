@@ -26,6 +26,7 @@ const restaurantData = [
     phone: "+973 17712288",
     address: "3389 Adliya",
     email: "cocos@gmail.com",
+    image:"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/13/6f/cf/b7/photo8jpg.jpg?w=1400&h=-1&s=1"
   },
 ]
 
