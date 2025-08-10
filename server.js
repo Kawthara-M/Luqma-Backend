@@ -36,12 +36,14 @@ const authRouter = require('./routes/AuthRouter')
 const customerRouter = require('./routes/CustomerRouter')
 const orderRouter = require("./routes/orderRouter") 
 const searchRouter = require('./routes/searchRouter')
+const restaurantRouter = require('./routes/restaurantRouter')
 
 // use Routers
 app.use('/auth', authRouter)
 app.use('/customer', customerRouter)
 app.use("/order", orderRouter) 
 app.use('/search', searchRouter)
+app.use("/Home", restaurantRouter)
 
 // Listener
 app.listen(port, () => {
