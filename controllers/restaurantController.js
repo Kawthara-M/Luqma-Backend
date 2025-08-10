@@ -46,6 +46,17 @@ const GetMenu = async (req, res) => {
 }
 
 // filter by category
+
+const GetCuisineTypes = async (req, res) => {
+  try {
+    const cuisines = await Restaurant.distinct('cuisineType')
+    res.send(cuisines)
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Failed to get cuisines')
+  }
+}
+
 const GetRestaurantsByCategory = async (req, res) => {
   try {
     const { cuisineType } = req.params
@@ -65,5 +76,6 @@ module.exports = {
   GetAllRestaurants,
   GetRestaurant,
   GetMenu,
+  GetCuisineTypes,
   GetRestaurantsByCategory
 }
