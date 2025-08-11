@@ -38,21 +38,18 @@ const GetPastOrders = async (req, res) => {
 const createOrder = async (req, res) => {
   try {
     console.log("create order")
-    let order = {}
-    order = await Order.findOne({
+    let order = await Order.findOne({
       customer: res.locals.payload.id,
       status: "cart",
     })
 
     if (!order) {
-      console.log("here")
-      console.log(...req.body.meals)
-      order = await Order.create({
-        meals: [...req.body.meals],
+      let order = await Order.create({
+        meals: [req.body.meals],
         customer: res.locals.payload.id,
         status: "cart",
       })
-      console.log(order)
+      console.log("meals in body"+req.body.meals)
       res.status(200).send(order)
     } else {
       console.error("An order for this user already exist in cart.")
@@ -65,10 +62,19 @@ const createOrder = async (req, res) => {
 
 const updateOrder = async (req, res) => {
   try {
-    let order = await Order.findByIdAndUpdate(req.params.id, {
-      $push: { meals: req.body.mealId },
-    })
-    await order.updateOne(req.body)
+
+    let order = await Order.findById(req.params.id)
+    const meal = order.meals.find(
+      (oneMeal) => oneMeal.meal.toString() === req.body.mealId
+    )
+    if (meal) {
+      console.log("this meal already exists")
+      meal.quantity += 1
+    } else {
+      order.meals.push({ meal: req.body.mealId, quantity: 1 })
+    }
+
+    await order.save()
 
     res.status(200).send(order)
   } catch (error) {
