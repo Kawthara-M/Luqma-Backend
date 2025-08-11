@@ -7,4 +7,4 @@ const deliverymanSchema = new Schema({
   email: { type: String }
 })
 
-module.exports = mongoose.model('Deliveryman', deliverymanSchema)
+module.exports = mongoose.model('DeliveryMan', deliverymanSchema)
