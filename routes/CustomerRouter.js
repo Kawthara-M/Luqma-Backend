@@ -3,13 +3,13 @@ const customerCtrl = require('../controllers/CustomerController')
 const middleware = require('../middleware')
 
 router.get(
-  '/profile/:id',
+  '/:id',
   middleware.stripToken,
   middleware.verifyToken,
   customerCtrl.getCustomerProfile
 )
 router.put(
-  '/profile/:id',
+  '/:id',
   middleware.stripToken,
   middleware.verifyToken,
   customerCtrl.updateCustomerProfile
