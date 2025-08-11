@@ -1,41 +1,41 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const orderSchema = mongoose.Schema(
   {
     customer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",
+      ref: 'Customer'
     },
     restaurant: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Restaurant",
+      ref: 'Restaurant'
     },
     deliveryMan: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "DeliveryMan",
-      default: null,
+      ref: 'Deliveryman',
+      default: null
     },
     meals: [
       {
-        meal: { type: mongoose.Schema.Types.ObjectId, ref: "Meal" },
-        quantity: { type: Number, default: 1 },
-      },
+        meal: { type: mongoose.Schema.Types.ObjectId, ref: 'Meal' },
+        quantity: { type: Number, default: 1 }
+      }
     ],
 
     totalPrice: {
-      type: Number,
+      type: Number
     },
     address: {
-      type: String,
+      type: String
       //   required: true,
     },
     status: {
       type: String,
-      enum: ["cart", "submitted", "processing", "delivered"],
-      default: "cart",
-    },
+      enum: ['cart', 'submitted', 'processing', 'delivered'],
+      default: 'cart'
+    }
   },
   { timestamps: true }
 )
 
-module.exports = mongoose.model("Order", orderSchema)
+module.exports = mongoose.model('Order', orderSchema)
