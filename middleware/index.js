@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-require('dotenv').config()
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
 console.log(SALT_ROUNDS)
@@ -23,21 +23,20 @@ const createToken = (payload) => {
 
 const stripToken = (req, res, next) => {
   try {
-    const token = req.headers['authorization'].split(' ')[1]
+    const token = req.headers["authorization"].split(" ")[1]
     if (token) {
       res.locals.token = token
       return next()
     }
-    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
+    res.status(401).send({ status: "Error", msg: "Unauthorized" })
   } catch (error) {
     console.log(error)
-    res.status(401).send({ status: 'Error', msg: 'Strip Token Error!' })
+    res.status(401).send({ status: "Error", msg: "Strip Token Error!" })
   }
 }
 
 const verifyToken = (req, res, next) => {
   const { token } = res.locals
-
   try {
     let payload = jwt.verify(token, APP_SECRET)
     if (payload) {
@@ -46,10 +45,10 @@ const verifyToken = (req, res, next) => {
       return next()
     }
 
-    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
+    res.status(401).send({ status: "Error", msg: "Unauthorized" })
   } catch (error) {
     console.log(error)
-    res.status(401).send({ status: 'Error', msg: 'Verify Token Error!' })
+    res.status(401).send({ status: "Error", msg: "Verify Token Error!" })
   }
 }
 
@@ -58,5 +57,5 @@ module.exports = {
   comparePassword,
   createToken,
   stripToken,
-  verifyToken
+  verifyToken,
 }

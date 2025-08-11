@@ -25,10 +25,13 @@ const GetPastOrders = async (req, res) => {
       res.status(200).send(orders)
     } else {
       res.status(200).send("No previous orders yet.")
+      res.status(200).send("No previous orders yet.")
     }
   } catch (error) {
     console.log(error)
     res.status(401).send({
+      status: "Error",
+      msg: "An error has occurred getting past orders !",
       status: "Error",
       msg: "An error has occurred getting past orders !",
     })
@@ -37,14 +40,15 @@ const GetPastOrders = async (req, res) => {
 
 const createOrder = async (req, res) => {
   try {
+    console.log("create order")
     let order = await Order.findOne({
       customer: res.locals.payload.id,
       status: "cart",
     })
 
     if (!order) {
-      order = await Order.create({
-        ...req.body,
+      let order = await Order.create({
+        meals: [req.body.meals],
         customer: res.locals.payload.id,
         status: "cart",
       })
@@ -54,16 +58,25 @@ const createOrder = async (req, res) => {
     }
   } catch (error) {
     console.error(error)
-    res.status(500).send("An error occured while adding a meal to the order")
+    res.status(500).send('An error occured while adding a meal to the order')
   }
 }
 
 const updateOrder = async (req, res) => {
   try {
-    let order = await Order.findByIdAndUpdate(req.params.id, {
-      $push: { meals: req.body.mealId },
-    })
-    await order.updateOne(req.body)
+
+    let order = await Order.findById(req.params.id)
+    const meal = order.meals.find(
+      (oneMeal) => oneMeal.meal.toString() === req.body.mealId
+    )
+    if (meal) {
+      console.log("this meal already exists")
+      meal.quantity += 1
+    } else {
+      order.meals.push({ meal: req.body.mealId, quantity: 1 })
+    }
+
+    await order.save()
 
     res.status(200).send(order)
   } catch (error) {
@@ -77,6 +90,7 @@ const deleteOrder = async (req, res) => {
     const order = await Order.findById(req.params.id)
     await order.deleteOne()
     res.status(200)
+    res.status(200)
   } catch (error) {
     console.log(error)
     res.status(500).send("An error occured meal can't be deleted")
@@ -88,5 +102,6 @@ module.exports = {
   GetPastOrders,
   createOrder,
   updateOrder,
+  deleteOrder,
   deleteOrder,
 }
