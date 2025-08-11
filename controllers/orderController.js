@@ -1,5 +1,6 @@
 const Order = require("../models/Order")
 const Meal = require("../models/Meal")
+const Delivery = require("../models/Deliveryman")
 const mongoose = require("mongoose")
 
 const GetCartOrders = async (req, res) => {
@@ -41,8 +42,17 @@ const createOrder = async (req, res) => {
     })
     const ObjectId = mongoose.Types.ObjectId
     const mealId = new ObjectId(req.body.meals.meal)
-
     const meal = await Meal.findById(mealId)
+
+    const deliveryMen = await Delivery.find()
+    if (deliveryMen.length === 0) {
+      console.log("No delivery men found")
+    } else {
+      const randomIndex = Math.floor(Math.random() * deliveryMen.length)
+      const deliveryMan = deliveryMen[randomIndex]
+
+      console.log("Randomly selected delivery man:", deliveryMan)
+    
 
     if (!order) {
       if (meal) {
@@ -51,12 +61,14 @@ const createOrder = async (req, res) => {
           customer: res.locals.payload.id,
           status: "cart",
           totalPrice: meal.price * parseInt(req.body.meals.quantity),
+          deliveryMan
         })
         res.status(200).send(order)
       }
-    } else {
+    } 
+    else {
       console.error("An order for this user already exist in cart.")
-    }
+    }}
   } catch (error) {
     console.error(error)
     res.status(500).send("An error occured while adding a meal to the order")
