@@ -37,23 +37,28 @@ const GetPastOrders = async (req, res) => {
 
 const createOrder = async (req, res) => {
   try {
-    let order = await Order.findOne({
+    console.log("create order")
+    let order = {}
+    order = await Order.findOne({
       customer: res.locals.payload.id,
       status: "cart",
     })
 
     if (!order) {
+      console.log("here")
+      console.log(...req.body.meals)
       order = await Order.create({
-        ...req.body,
+        meals: [...req.body.meals],
         customer: res.locals.payload.id,
         status: "cart",
       })
+      console.log(order)
       res.status(200).send(order)
     } else {
       console.error("An order for this user already exist in cart.")
     }
   } catch (error) {
-    console.error(error)
+    // console.error(error)
     res.status(500).send("An error occured while adding a meal to the order")
   }
 }
