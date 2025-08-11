@@ -1,21 +1,17 @@
-const Order = require('../models/Order')
+const Order = require("../models/Order")
 
 const GetCartOrders = async (req, res) => {
   try {
     const orders = await Order.find({
       customer: res.locals.payload.id,
-      status: 'cart'
+      status: "cart",
     })
-    if (orders.length > 0) {
-      res.status(200).send(orders)
-    } else {
-      res.status(200).send('Empty Cart')
-    }
+    res.status(200).send(orders)
   } catch (error) {
     console.log(error)
     res.status(401).send({
-      status: 'Error',
-      msg: 'An error has occurred getting cart !'
+      status: "Error",
+      msg: "An error has occurred getting cart !",
     })
   }
 }
@@ -23,18 +19,18 @@ const GetPastOrders = async (req, res) => {
   try {
     const orders = await Order.find({
       customer: res.locals.payload.id,
-      status: 'delivered'
+      status: "delivered",
     })
     if (orders.length > 0) {
       res.status(200).send(orders)
     } else {
-      res.status(200).send('No previous orders yet.')
+      res.status(200).send("No previous orders yet.")
     }
   } catch (error) {
     console.log(error)
     res.status(401).send({
-      status: 'Error',
-      msg: 'An error has occurred getting past orders !'
+      status: "Error",
+      msg: "An error has occurred getting past orders !",
     })
   }
 }
@@ -43,27 +39,29 @@ const createOrder = async (req, res) => {
   try {
     let order = await Order.findOne({
       customer: res.locals.payload.id,
-      status: 'cart'
+      status: "cart",
     })
 
     if (!order) {
       order = await Order.create({
         ...req.body,
         customer: res.locals.payload.id,
-        status: 'cart'
+        status: "cart",
       })
+      res.status(200).send(order)
+    } else {
+      console.error("An order for this user already exist in cart.")
     }
-    res.status(200).send(order)
   } catch (error) {
     console.error(error)
-    res.status(500).send('An error occured while adding a meal to the order')
+    res.status(500).send("An error occured while adding a meal to the order")
   }
 }
 
 const updateOrder = async (req, res) => {
   try {
     let order = await Order.findByIdAndUpdate(req.params.id, {
-      $push: { meals: req.body.mealId }
+      $push: { meals: req.body.mealId },
     })
     await order.updateOne(req.body)
 
@@ -78,7 +76,7 @@ const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
     await order.deleteOne()
-    res.status(200) 
+    res.status(200)
   } catch (error) {
     console.log(error)
     res.status(500).send("An error occured meal can't be deleted")
@@ -90,5 +88,5 @@ module.exports = {
   GetPastOrders,
   createOrder,
   updateOrder,
-  deleteOrder
+  deleteOrder,
 }
