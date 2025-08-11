@@ -35,37 +35,30 @@ const GetPastOrders = async (req, res) => {
 
 const createOrder = async (req, res) => {
   try {
-    console.log("create order")
     let order = await Order.findOne({
       customer: res.locals.payload.id,
       status: "cart",
     })
-    console.log(req.body.meals.meal)
     const ObjectId = mongoose.Types.ObjectId
     const mealId = new ObjectId(req.body.meals.meal)
-    console.log("meal id:" + mealId)
 
     const meal = await Meal.findById(mealId)
-    if (meal) {
-      console.log("meal:" + meal)
-    } else {
-      console.log("no meal")
-    }
 
     if (!order) {
-      let order = await Order.create({
-        meals: [req.body.meals],
-        customer: res.locals.payload.id,
-        status: "cart",
-         totalPrice: meal.price // would this work?
-      })
-      console.log("meals in body" + req.body.meals)
-      res.status(200).send(order)
+      if (meal) {
+        let order = await Order.create({
+          meals: [req.body.meals],
+          customer: res.locals.payload.id,
+          status: "cart",
+          totalPrice: meal.price * parseInt(req.body.meals.quantity),
+        })
+        res.status(200).send(order)
+      }
     } else {
       console.error("An order for this user already exist in cart.")
     }
   } catch (error) {
-     console.error(error)
+    console.error(error)
     res.status(500).send("An error occured while adding a meal to the order")
   }
 }
@@ -78,11 +71,13 @@ const updateOrder = async (req, res) => {
     )
     const mealDetails = await Meal.findById(req.body.mealId)
     if (meal) {
-     // console.log(mealDetails)
-      meal.quantity += 1
-      order.totalPrice+=parseInt(mealDetails.price)
+      meal.quantity += parseInt(req.body.quantity)
+      order.totalPrice +=
+        parseFloat(mealDetails.price) * parseInt(req.body.quantity)
     } else {
-      order.meals.push({ meal: req.body.mealId, quantity: 1 })
+      order.meals.push({ meal: req.body.mealId, quantity: req.body.quantity })
+      order.totalPrice +=
+        parseFloat(mealDetails.price) * parseInt(req.body.quantity)
     }
 
     await order.save()
