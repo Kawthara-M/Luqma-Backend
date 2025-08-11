@@ -10,6 +10,4 @@ router.get(
   orderCtrl.GetPastOrders
 )
 
-
-
 module.exports = router

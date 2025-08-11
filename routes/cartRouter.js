@@ -3,7 +3,7 @@ const cartCtrl = require("../controllers/orderController")
 const middleware = require("../middleware")
 // get all orders in cart
 router.get(
-  "/cart",
+  "/",
   middleware.stripToken,
   middleware.verifyToken,
   cartCtrl.GetCartOrders
@@ -11,7 +11,7 @@ router.get(
 
 // create order in cart
 router.post(
-  "/cart",
+  "/",
   middleware.stripToken,
   middleware.verifyToken,
   cartCtrl.createOrder
@@ -19,7 +19,7 @@ router.post(
 
 // update order in cart
 router.put(
-  "/cart/:id",
+  "/:id",
   middleware.stripToken,
   middleware.verifyToken,
   cartCtrl.updateOrder
