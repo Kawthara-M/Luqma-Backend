@@ -57,8 +57,8 @@ const GetPastOrders = async (req, res) => {
   } catch (error) {
     console.log(error)
     res.status(401).send({
-      status: 'Error',
-      msg: 'An error has occurred getting past orders !'
+      status: "Error",
+      msg: "An error has occurred getting past orders !",
     })
   }
 }
@@ -105,7 +105,7 @@ const createOrder = async (req, res) => {
     }
   } catch (error) {
     console.error(error)
-    res.status(500).send('An error occurred while adding a meal to the order')
+    res.status(500).send("An error occured while adding a meal to the order")
   }
 }
 
