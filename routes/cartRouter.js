@@ -1,0 +1,35 @@
+const router = require("express").Router()
+const cartCtrl = require("../controllers/orderController")
+const middleware = require("../middleware")
+// get all orders in cart
+router.get(
+  "/cart",
+  middleware.stripToken,
+  middleware.verifyToken,
+  cartCtrl.GetCartOrders
+)
+
+// create order in cart
+router.post(
+  "/cart",
+  middleware.stripToken,
+  middleware.verifyToken,
+  cartCtrl.createOrder
+)
+
+// update order in cart
+router.put(
+  "/cart/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  cartCtrl.updateOrder
+) 
+
+// delete an order from cart
+router.delete(
+  "/cart/:id",
+  middleware.stripToken,
+  middleware.verifyToken,
+  cartCtrl.deleteOrder
+) 
+module.exports = router
