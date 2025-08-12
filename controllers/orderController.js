@@ -9,6 +9,8 @@ const GetCartOrders = async (req, res) => {
       customer: res.locals.payload.id,
       status: "cart",
     })
+    
+
     res.status(200).send(orders)
   } catch (error) {
     console.log(error)
@@ -52,23 +54,22 @@ const createOrder = async (req, res) => {
       const deliveryMan = deliveryMen[randomIndex]
 
       console.log("Randomly selected delivery man:", deliveryMan)
-    
 
-    if (!order) {
-      if (meal) {
-        let order = await Order.create({
-          meals: [req.body.meals],
-          customer: res.locals.payload.id,
-          status: "cart",
-          totalPrice: meal.price * parseInt(req.body.meals.quantity),
-          deliveryMan
-        })
-        res.status(200).send(order)
+      if (!order) {
+        if (meal) {
+          let order = await Order.create({
+            meals: [req.body.meals],
+            customer: res.locals.payload.id,
+            status: "cart",
+            totalPrice: meal.price * parseInt(req.body.meals.quantity),
+            deliveryMan,
+          })
+          res.status(200).send(order)
+        }
+      } else {
+        console.error("An order for this user already exist in cart.")
       }
-    } 
-    else {
-      console.error("An order for this user already exist in cart.")
-    }}
+    }
   } catch (error) {
     console.error(error)
     res.status(500).send("An error occured while adding a meal to the order")
