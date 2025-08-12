@@ -30,7 +30,7 @@ const restaurantData = [
   },
   {
   name: "McDonald's",
-  cuisineType: "Fast Food / Burgers",
+  cuisineType: "Fast-Food",
   phone: "+973 1234 5678",
   address: "Multiple branches across Bahrain",
   email: "contact@mcdonalds.bh",
@@ -38,7 +38,7 @@ const restaurantData = [
 },
 {
   name: "Hardee's",
-  cuisineType: "Fast Food / Burgers / Fried Chicken",
+  cuisineType: "Fast-Food",
   phone: "+973 2345 6789",
   address: "Multiple branches across Bahrain",
   email: "info@hardees.bh",
@@ -46,7 +46,7 @@ const restaurantData = [
 },
 {
   name: "Papa John's",
-  cuisineType: "Italian / Pizza",
+  cuisineType: "Italian",
   phone: "+973 3456 7890",
   address: "Multiple branches across Bahrain",
   email: "support@papajohns.bh",
@@ -54,7 +54,7 @@ const restaurantData = [
 },
 {
   name: "KFC",
-  cuisineType: "Fast Food / Fried Chicken",
+  cuisineType: "Fast-Food",
   phone: "+973 4567 8901",
   address: "Multiple branches across Bahrain",
   email: "contact@kfc.bh",
@@ -62,7 +62,7 @@ const restaurantData = [
 },
 {
   name: "Pizza Hut",
-  cuisineType: "Italian / Pizza / Fast Food",
+  cuisineType: "Italian",
   phone: "+973 5678 9012",
   address: "Multiple branches across Bahrain",
   email: "support@pizzahut.bh",
@@ -70,7 +70,7 @@ const restaurantData = [
 },
 {
   name: "Burger King",
-  cuisineType: "Fast Food / Burgers",
+  cuisineType: "Fast Food",
   phone: "+973 6789 0123",
   address: "Multiple branches across Bahrain",
   email: "info@burgerking.bh",
@@ -78,7 +78,7 @@ const restaurantData = [
 },
 {
   name: "Domino's Pizza",
-  cuisineType: "Italian / Pizza",
+  cuisineType: "Italian",
   phone: "+973 7890 1234",
   address: "Multiple branches across Bahrain",
   email: "contact@dominos.bh",
@@ -86,7 +86,7 @@ const restaurantData = [
 },
 {
   name: "Subway",
-  cuisineType: "Fast Food / Sandwiches",
+  cuisineType: "Fast-Food",
   phone: "+973 8901 2345",
   address: "Multiple branches across Bahrain",
   email: "support@subway.bh",
@@ -94,7 +94,7 @@ const restaurantData = [
 },
 {
   name: "Texas Chicken",
-  cuisineType: "Fast Food / Fried Chicken",
+  cuisineType: "Fast-Food",
   phone: "+973 9012 3456",
   address: "Multiple branches across Bahrain",
   email: "contact@texaschicken.bh",
