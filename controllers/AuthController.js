@@ -1,15 +1,20 @@
-const Customer = require('../models/Customer')
-const Order = require('../models/Order')
-const middleware = require('../middleware/index')
-const validatePassword = require('../validators/passwordValidator.js')
+const Customer = require("../models/Customer")
+const Order = require("../models/Order")
+const middleware = require("../middleware/index")
+const validatePassword = require("../validators/passwordValidator.js")
 
 const SignUp = async (req, res) => {
   try {
     const { name, email, phone, password } = req.body
 
-    /*   if (!validatePassword(password)) {
-      return res.status(400).json({ error: "Weak Password! Have a mix of capital and lower letters, digits, and unique symbols!" })
-    } */ //uncomment when everything is done
+    if (!validatePassword(password)) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "Weak Password! Have a mix of capital and lower letters, digits, and unique symbols!",
+        })
+    }
 
     let hashPassword = await middleware.hashPassword(password)
 
@@ -17,19 +22,18 @@ const SignUp = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ error: 'A user with that email has already been registered!' })
+        .json({ error: "A user with that email has already been registered!" })
     } else {
       const customer = await Customer.create({
         name,
         email,
         phone,
-        passwordDigest: hashPassword
+        passwordDigest: hashPassword,
       })
       let payload = {
         id: customer._id,
-        email: customer.email
+        email: customer.email,
       }
-      console.log(payload)
 
       let token = middleware.createToken(payload)
 
@@ -43,6 +47,14 @@ const SignUp = async (req, res) => {
 const SignIn = async (req, res) => {
   try {
     const { email, passwordDigest } = req.body
+    if (!validatePassword(passwordDigest)) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "Weak Password! Have a mix of capital and lower letters, digits, and unique symbols!",
+        })
+    }
 
     const customer = await Customer.findOne({ email })
 
@@ -54,16 +66,16 @@ const SignIn = async (req, res) => {
     if (matched) {
       let payload = {
         id: customer._id,
-        email: customer.email
+        email: customer.email,
       }
       let token = middleware.createToken(payload)
       return res.send({ customer: payload, token })
     }
 
-    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
+    res.status(401).send({ status: "Error", msg: "Unauthorized" })
   } catch (error) {
     console.log(error)
-    res.status(401).send({ status: 'Error', msg: 'An error has occurred!' })
+    res.status(401).send({ status: "Error", msg: "An error has occurred!" })
   }
 }
 
@@ -73,17 +85,17 @@ const deletAccount = async (req, res) => {
     const userId = req.params.id
 
     if (res.locals.payload.id !== userId) {
-      return res.status(403).send({ msg: 'Unauthorized request' })
+      return res.status(403).send({ msg: "Unauthorized request" })
     }
 
     // am not sure if this works as order still don't have data, but it's supposed to delete orders made by of current user account before deleting the account
     // await Order.deleteMany({ customer: userId } )
     await Customer.findByIdAndDelete(userId)
 
-    res.status(200).send({ msg: 'Account successfully deleted' })
+    res.status(200).send({ msg: "Account successfully deleted" })
   } catch (error) {
     console.error(error)
-    res.status(500).send({ msg: 'Failed to delete account' })
+    res.status(500).send({ msg: "Failed to delete account" })
   }
 }
 
@@ -95,5 +107,5 @@ module.exports = {
   SignUp,
   SignIn,
   CheckSession,
-  deletAccount
+  deletAccount,
 }

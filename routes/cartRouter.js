@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const cartCtrl = require("../controllers/orderController")
 const middleware = require("../middleware")
+
 // get all orders in cart
 router.get(
   "/",
@@ -32,4 +33,10 @@ router.delete(
   middleware.verifyToken,
   cartCtrl.deleteOrder
 ) 
+
+//delete a meal from an order
+router.delete('/:orderId/meal/:mealId',
+  middleware.stripToken,
+  middleware.verifyToken, cartCtrl.deleteMealFromOrder)
+
 module.exports = router
