@@ -115,13 +115,17 @@ const updateOrder = async (req, res) => {
     const meal = order.meals.find(
       (oneMeal) => oneMeal.meal.toString() === req.body.mealId
     )
+    console.log("meal id:"+req.body.mealId)
     const mealDetails = await Meal.findById(req.body.mealId)
+    
     if (meal) {
+      console.log("meal details:"+mealDetails)
       meal.quantity += parseInt(req.body.quantity)
       order.totalPrice +=
         parseFloat(mealDetails.price) * parseInt(req.body.quantity)
     } else {
       order.meals.push({ meal: req.body.mealId, quantity: req.body.quantity })
+      console.log("order meals"+mealDetails)
       order.totalPrice +=
         parseFloat(mealDetails.price) * parseInt(req.body.quantity)
     }
