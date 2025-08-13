@@ -1,29 +1,29 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const mealSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     restaurant: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Restaurant",
+      ref: 'Restaurant'
     },
     description: {
       type: String,
-      required: true,
+      required: true
     },
     price: {
       type: Number,
-      required: true,
+      required: true
     },
-    image : {
-      type: String,
+    image: {
+      type: String
     }
   },
   { timestamps: true }
 )
 
-const Meal = mongoose.model("Meal", mealSchema)
+const Meal = mongoose.model('Meal', mealSchema)
 module.exports = Meal
