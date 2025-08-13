@@ -83,8 +83,7 @@ const deletAccount = async (req, res) => {
       return res.status(403).send({ msg: "Unauthorized request" })
     }
 
-    // am not sure if this works as order still don't have data, but it's supposed to delete orders made by of current user account before deleting the account
-    // await Order.deleteMany({ customer: userId } )
+    await Order.deleteMany({ customer: userId })
     await Customer.findByIdAndDelete(userId)
 
     res.status(200).send({ msg: "Account successfully deleted" })

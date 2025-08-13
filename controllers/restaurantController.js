@@ -45,7 +45,6 @@ const GetMenu = async (req, res) => {
   }
 }
 
-// filter by category
 
 const GetCuisineTypes = async (req, res) => {
   try {
