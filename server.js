@@ -26,7 +26,7 @@ app.use(morgan('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Root Route
-app.get('/auth/sign-in', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Your app is connected . . . ')
 })
 
