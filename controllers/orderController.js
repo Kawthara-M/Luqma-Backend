@@ -117,6 +117,7 @@ const updateOrder = async (req, res) => {
       (oneMeal) => oneMeal.meal.toString() === req.body.mealId
     )
 
+
     const mealDetails = await Meal.findById(req.body.mealId)
     const newQuantity = parseInt(req.body.quantity)
     if (meal) {

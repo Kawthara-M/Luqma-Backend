@@ -69,7 +69,7 @@ const SignIn = async (req, res) => {
         email: customer.email,
       }
       let token = middleware.createToken(payload)
-      return res.send({ customer: payload, token })
+      return res.send({ user: payload, token })
     }
 
     res.status(401).send({ status: "Error", msg: "Unauthorized" })
