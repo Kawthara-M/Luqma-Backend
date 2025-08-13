@@ -33,7 +33,6 @@ const GetCartOrders = async (req, res) => {
   }
 }
 
-
 const GetPastOrders = async (req, res) => {
   try {
     const orders = await Order.find({
@@ -117,22 +116,23 @@ const updateOrder = async (req, res) => {
       (oneMeal) => oneMeal.meal.toString() === req.body.mealId
     )
 
-
     const mealDetails = await Meal.findById(req.body.mealId)
     const newQuantity = parseInt(req.body.quantity)
     if (meal) {
       const oldQuantity = meal.quantity
       const priceDiff = (newQuantity - oldQuantity) * mealDetails.price
-      meal.quantity += newQuantity
+      if (req.body.note) {
+        meal.quantity = newQuantity
+      } else {
+        meal.quantity = newQuantity
+      }
       order.totalPrice += priceDiff
-
     } else {
       order.meals.push({ meal: req.body.mealId, quantity: req.body.quantity })
       order.totalPrice +=
         parseFloat(mealDetails.price) * parseInt(req.body.quantity)
     }
 
-    
     await order.save()
 
     res.status(200).send(order)
@@ -153,7 +153,6 @@ const deleteOrder = async (req, res) => {
   }
 }
 const deleteMealFromOrder = async (req, res) => {
-  console.log("entered delete")
   const { orderId, mealId } = req.params
 
   try {
@@ -162,39 +161,28 @@ const deleteMealFromOrder = async (req, res) => {
       return res.status(404).send({ msg: "Order not found" })
     }
 
-      const mealDetails = await Meal.findById(mealId)
+    const mealDetails = await Meal.findById(mealId)
 
-     // I want to know the quantity of this meal in order
-      const mealInOrder = order.meals.find(
+    const mealInOrder = order.meals.find(
       (oneMeal) => oneMeal.meal.toString() === mealId
     )
-    console.log(mealInOrder)
-    //console.log(order.meals[0].meal.restaurant)
-    // Remove the meal from the meals array
 
     if (mealInOrder && mealDetails) {
-  const mealPrice = mealDetails.price
-  const mealQuantity = mealInOrder.quantity
-  order.totalPrice -= mealPrice * mealQuantity
+      const mealPrice = mealDetails.price
+      const mealQuantity = mealInOrder.quantity
+      order.totalPrice -= mealPrice * mealQuantity
 
-  // Prevent negative total
-  if (order.totalPrice < 0) {
-    order.totalPrice = 0
-  }
-}
+      if (order.totalPrice < 0) {
+        order.totalPrice = 0
+      }
+    }
     order.meals = order.meals.filter(
       (mealItem) => mealItem.meal.toString() !== mealId
     )
-    // I want to know meal price
-   
-
-
-   // order.totalPrice= order.totalPrice
 
     await order.save()
 
-    // Optionally re-populate and return the updated order
-    const updatedOrder = await Order.findById(orderId)
+    const updatedOrders = await Order.find({ customer: res.locals.payload.id, status:"cart" })
       .populate("restaurant")
       .populate("deliveryMan")
       .populate({
@@ -202,7 +190,7 @@ const deleteMealFromOrder = async (req, res) => {
         populate: { path: "restaurant", model: "Restaurant" },
       })
 
-    res.status(200).send([updatedOrder]) // Match frontend structure
+    res.status(200).send(updatedOrders)
   } catch (error) {
     console.error(error)
     res.status(500).send({ msg: "Failed to delete meal from order" })
