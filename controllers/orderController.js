@@ -123,7 +123,7 @@ const updateOrder = async (req, res) => {
     if (meal) {
       const oldQuantity = meal.quantity
       const priceDiff = (newQuantity - oldQuantity) * mealDetails.price
-      meal.quantity = newQuantity
+      meal.quantity += newQuantity
       order.totalPrice += priceDiff
 
     } else {
@@ -132,6 +132,7 @@ const updateOrder = async (req, res) => {
         parseFloat(mealDetails.price) * parseInt(req.body.quantity)
     }
 
+    
     await order.save()
 
     res.status(200).send(order)
@@ -161,10 +162,34 @@ const deleteMealFromOrder = async (req, res) => {
       return res.status(404).send({ msg: "Order not found" })
     }
 
+      const mealDetails = await Meal.findById(mealId)
+
+     // I want to know the quantity of this meal in order
+      const mealInOrder = order.meals.find(
+      (oneMeal) => oneMeal.meal.toString() === mealId
+    )
+    console.log(mealInOrder)
+    //console.log(order.meals[0].meal.restaurant)
     // Remove the meal from the meals array
+
+    if (mealInOrder && mealDetails) {
+  const mealPrice = mealDetails.price
+  const mealQuantity = mealInOrder.quantity
+  order.totalPrice -= mealPrice * mealQuantity
+
+  // Prevent negative total
+  if (order.totalPrice < 0) {
+    order.totalPrice = 0
+  }
+}
     order.meals = order.meals.filter(
       (mealItem) => mealItem.meal.toString() !== mealId
     )
+    // I want to know meal price
+   
+
+
+   // order.totalPrice= order.totalPrice
 
     await order.save()
 
