@@ -33,7 +33,6 @@ const deliverymenData = [
 const seedDeliverymen = async () => {
   try {
     await Deliveryman.insertMany(deliverymenData)
-    console.log("New delivery men created!")
   } catch (err) {
     console.error("Error seeding delivery men:", err)
   } finally {

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Meal = require("../models/Meal")
 require("dotenv").config()
-console.log(process.env.MONGO_URI)
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
@@ -354,8 +354,6 @@ const mealData = [
 const seedMeals = async () => {
   try {
     await Meal.insertMany(mealData)
-
-    console.log("Meals seeded successfully!")
     mongoose.connection.close()
   } catch (err) {
     console.error("Error seeding meals:", err)

@@ -76,14 +76,11 @@ const createOrder = async (req, res) => {
 
     const deliveryMen = await Delivery.find()
     if (deliveryMen.length === 0) {
-      console.log("No delivery men found")
       return res.status(400).send({ msg: "No delivery men available" })
     }
 
     const randomIndex = Math.floor(Math.random() * deliveryMen.length)
     const deliveryMan = deliveryMen[randomIndex]
-
-    console.log("Randomly selected delivery man:", deliveryMan)
 
     if (!order) {
       if (meal) {

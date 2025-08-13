@@ -113,8 +113,6 @@ const restaurantData = [
 // Seed function
 const seedRestaurants = async () => {
   await Restaurant.insertMany(restaurantData)
-  console.log('New restaurants created!')
-
   mongoose.connection.close()
 }
 
