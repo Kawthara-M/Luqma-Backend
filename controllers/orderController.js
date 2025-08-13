@@ -123,7 +123,7 @@ const updateOrder = async (req, res) => {
     if (meal) {
       const oldQuantity = meal.quantity
       const priceDiff = (newQuantity - oldQuantity) * mealDetails.price
-      meal.quantity = newQuantity
+      meal.quantity += newQuantity
       order.totalPrice += priceDiff
 
     } else {
