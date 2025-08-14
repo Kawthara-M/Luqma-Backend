@@ -67,7 +67,7 @@ const createOrder = async (req, res) => {
   try {
     let order = await Order.findOne({
       customer: res.locals.payload.id,
-      status: "cart",
+      //status: "cart",
     })
 
     const ObjectId = mongoose.Types.ObjectId
