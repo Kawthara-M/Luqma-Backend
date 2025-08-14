@@ -24,7 +24,7 @@ router.put(
   middleware.stripToken,
   middleware.verifyToken,
   cartCtrl.updateOrder
-) 
+)
 
 // delete an order from cart
 router.delete(
@@ -32,11 +32,15 @@ router.delete(
   middleware.stripToken,
   middleware.verifyToken,
   cartCtrl.deleteOrder
-) 
+)
 
 //delete a meal from an order
-router.delete('/:orderId/meal/:mealId',
+router.delete(
+  "/:orderId/meal/:mealId",
   middleware.stripToken,
-  middleware.verifyToken, cartCtrl.deleteMealFromOrder)
+  middleware.verifyToken,
+  cartCtrl.deleteMealFromOrder
+)
+
 
 module.exports = router

@@ -200,5 +200,5 @@ module.exports = {
   createOrder,
   updateOrder,
   deleteOrder,
-  deleteMealFromOrder,
+  deleteMealFromOrder, UpdateAddress
 }
